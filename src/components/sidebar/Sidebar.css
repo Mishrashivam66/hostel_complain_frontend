@@ -1,0 +1,189 @@
+/* ====================== */
+/* SIDEBAR */
+/* ====================== */
+
+.sidebar {
+
+  width: 260px;
+
+  height: 100vh;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0f172a,
+      #111827
+    );
+
+  padding: 24px 18px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  position: sticky;
+
+  top: 0;
+
+  border-right:
+    1px solid rgba(255,255,255,0.08);
+
+}
+
+/* ====================== */
+/* LOGO */
+/* ====================== */
+
+.sidebar-logo {
+
+  color: #3b82f6;
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  margin-bottom: 40px;
+
+}
+
+/* ====================== */
+/* MENU */
+/* ====================== */
+
+.sidebar-menu {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+}
+
+/* ====================== */
+/* LINK */
+/* ====================== */
+
+.sidebar-link {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px 18px;
+
+  border-radius: 16px;
+
+  text-decoration: none;
+
+  color: #d1d5db;
+
+  font-size: 16px;
+
+  font-weight: 500;
+
+  transition: 0.3s ease;
+
+}
+
+/* HOVER */
+
+.sidebar-link:hover {
+
+  background:
+    rgba(59,130,246,0.12);
+
+  color: white;
+
+}
+
+/* ACTIVE */
+
+.sidebar-link.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color: white;
+
+  box-shadow:
+    0 10px 25px
+    rgba(59,130,246,0.35);
+
+}
+
+/* ICON */
+
+.sidebar-link svg {
+
+  min-width: 20px;
+
+}
+
+/* ====================== */
+/* LOGOUT */
+/* ====================== */
+
+.logout-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background:
+    rgba(239,68,68,0.18);
+
+  color: #fca5a5;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+
+}
+
+.logout-btn:hover {
+
+  background:
+    rgba(239,68,68,0.28);
+
+  color: white;
+
+}
+
+/* ====================== */
+/* MOBILE */
+/* ====================== */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+
+    width: 260px;
+
+    height: 100vh;
+
+  }
+
+}

@@ -1,0 +1,352 @@
+.register-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-image:
+    url("../../assets/amity.jpg");
+
+  background-size: cover;
+
+  background-position: center;
+
+}
+.register-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(2,8,23,0.9),
+      rgba(30,41,59,0.88)
+    );
+
+  z-index: 1;
+
+}
+
+.register-left {
+
+  width: 50%;
+
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  padding: 60px;
+
+  color: white;
+
+}
+
+.register-brand h1 {
+
+  font-size: 55px;
+
+  font-weight: bold;
+
+  line-height: 1;
+
+}
+
+.register-brand p {
+
+  margin-top: 10px;
+
+  color: #cbd5e1;
+
+}
+
+.register-hero {
+
+  margin-top: auto;
+
+}
+
+.register-hero h2 {
+
+  font-size: 60px;
+
+  font-weight: bold;
+
+}
+
+.register-hero p {
+
+  margin-top: 20px;
+
+  max-width: 500px;
+
+  line-height: 1.8;
+
+  color: #cbd5e1;
+
+}
+
+.register-features {
+
+  display: flex;
+
+  gap: 30px;
+
+  margin-top: 60px;
+
+  flex-wrap: wrap;
+
+}
+
+.register-feature {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: white;
+
+}
+
+.register-right {
+
+  width: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  position: relative;
+
+  z-index: 2;
+
+  padding: 30px;
+
+}
+
+.register-card {
+
+  width: 100%;
+
+  max-width: 480px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(20px);
+
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  border-radius: 30px;
+
+  padding: 45px;
+
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.35);
+
+}
+
+.register-title {
+
+  text-align: center;
+
+  font-size: 42px;
+
+  color: #60a5fa;
+
+  font-weight: bold;
+
+}
+
+.register-subtitle {
+
+  text-align: center;
+
+  margin-top: 10px;
+
+  color: #cbd5e1;
+
+  margin-bottom: 30px;
+
+}
+
+.register-message {
+
+  background:
+    rgba(59,130,246,0.12);
+
+  border:
+    1px solid rgba(59,130,246,0.25);
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  text-align: center;
+
+  color: #93c5fd;
+
+  margin-bottom: 20px;
+
+}
+
+.register-input-box {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  background:
+    rgba(255,255,255,0.06);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  margin-bottom: 20px;
+
+}
+
+.register-input-box input {
+
+  width: 100%;
+
+  background: transparent;
+
+  border: none;
+
+  outline: none;
+
+  color: white;
+
+  font-size: 15px;
+
+}
+
+.register-input-box input::placeholder {
+
+  color: #94a3b8;
+
+}
+
+.register-select {
+
+  width: 100%;
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.06);
+
+  color: white;
+
+  outline: none;
+
+  margin-bottom: 20px;
+
+}
+
+.register-select option {
+
+  background: #0f172a;
+
+}
+
+.register-btn {
+
+  width: 100%;
+
+  padding: 16px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #3b82f6
+    );
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.register-btn:hover {
+
+  transform: translateY(-2px);
+
+  opacity: 0.9;
+
+}
+
+.register-footer {
+
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #cbd5e1;
+
+}
+
+.register-footer a {
+
+  color: #60a5fa;
+
+  text-decoration: none;
+
+}
+
+@media(max-width:950px){
+
+  .register-left{
+
+    display:none;
+
+  }
+
+  .register-right{
+
+    width:100%;
+
+  }
+
+}

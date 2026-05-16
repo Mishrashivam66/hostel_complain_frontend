@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+body {
+
+  margin: 0;
+
+  padding: 0;
+
+  background: #020817;
+
+  color: white;
+
+  font-family: sans-serif;
+
+}
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+
+  -webkit-box-shadow:
+    0 0 0px 1000px #374151 inset !important;
+
+  -webkit-text-fill-color:
+    white !important;
+
+}
