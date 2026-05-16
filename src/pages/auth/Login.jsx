@@ -158,17 +158,43 @@ const Login = () => {
 
     catch (error) {
 
-      setMessage(
+  // ======================
+  // ADMIN APPROVAL PENDING
+  // ======================
 
-        error.response?.data?.message
+  if (
 
-        ||
+    error.response?.status === 403
 
-        "Login Failed"
+  ) {
 
-      );
+    setMessage(
 
-    }
+      "Admin approval pending"
+
+    );
+
+  }
+
+  // ======================
+  // OTHER ERRORS
+  // ======================
+
+  else {
+
+    setMessage(
+
+      error.response?.data?.message
+
+      ||
+
+      "Login Failed"
+
+    );
+
+  }
+
+}
 
   };
 

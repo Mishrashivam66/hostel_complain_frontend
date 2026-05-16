@@ -1,5 +1,4 @@
 import "./Sidebar.css";
-git branch -M maingit
 import {
   LayoutDashboard,
   FilePlus2,

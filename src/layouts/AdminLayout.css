@@ -1,0 +1,345 @@
+/* ====================== */
+/* LAYOUT */
+/* ====================== */
+
+.admin-layout {
+
+  display: flex;
+
+  min-height: 100vh;
+
+  background: #020617;
+
+  color: white;
+
+}
+
+/* ====================== */
+/* SIDEBAR */
+/* ====================== */
+
+.admin-sidebar {
+
+  width: 260px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0f172a,
+      #111827
+    );
+
+  border-right:
+    1px solid rgba(255,255,255,0.06);
+
+  padding: 24px 18px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  bottom: 0;
+
+}
+
+/* ====================== */
+/* LOGO */
+/* ====================== */
+
+.admin-logo {
+
+  margin-bottom: 35px;
+
+}
+
+.admin-logo h2 {
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+/* ====================== */
+/* MENU */
+/* ====================== */
+
+.admin-menu {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  flex: 1;
+
+}
+
+/* ====================== */
+/* MENU ITEM */
+/* ====================== */
+
+.admin-menu-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  border-radius: 16px;
+
+  color: #cbd5e1;
+
+  text-decoration: none;
+
+  transition: 0.3s ease;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+}
+
+.admin-menu-item:hover {
+
+  background:
+    rgba(59,130,246,0.12);
+
+  color: white;
+
+}
+
+.active-admin {
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #60a5fa
+    );
+
+  color: white;
+
+}
+
+/* ====================== */
+/* LOGOUT */
+/* ====================== */
+
+.logout-btn {
+
+  border: none;
+
+  background:
+    rgba(239,68,68,0.15);
+
+  color: #fca5a5;
+
+  padding: 14px;
+
+  border-radius: 16px;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+}
+
+/* ====================== */
+/* MAIN */
+/* ====================== */
+
+.admin-main {
+
+  flex: 1;
+
+  margin-left: 260px;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+/* ====================== */
+/* TOPBAR */
+/* ====================== */
+
+.admin-topbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 24px 30px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.06);
+
+  background:
+    rgba(15,23,42,0.7);
+
+  backdrop-filter: blur(14px);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 50;
+
+}
+
+/* ====================== */
+/* TOP RIGHT */
+/* ====================== */
+
+.admin-top-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+}
+
+/* ====================== */
+/* NOTIFICATION */
+/* ====================== */
+/* ====================== */
+/* NOTIFICATION */
+/* ====================== */
+
+.notification-box {
+
+  position: relative;
+
+  width: 45px;
+
+  height: 45px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255,255,255,0.06);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  color: white;
+
+  transition: 0.3s ease;
+
+}
+
+.notification-box:hover {
+
+  background:
+    rgba(59,130,246,0.15);
+
+}
+
+/* ====================== */
+/* NOTIFICATION COUNT */
+/* ====================== */
+
+.notification-count {
+
+  position: absolute;
+
+  top: -5px;
+
+  right: -5px;
+
+  min-width: 18px;
+
+  height: 18px;
+
+  border-radius: 50%;
+
+  background: #ef4444;
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0 5px;
+
+}
+/* ====================== */
+/* PROFILE */
+/* ====================== */
+
+.admin-profile {
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #60a5fa
+    );
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+}
+
+/* ====================== */
+/* CONTENT */
+/* ====================== */
+
+.admin-content {
+
+  padding: 30px;
+
+}
