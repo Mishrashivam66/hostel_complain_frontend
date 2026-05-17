@@ -69,7 +69,6 @@ const Profile = () => {
             await axios.get(
 
               `${process.env.BASE_URL}api/auth/me`,
-               {}
 
               {
 
