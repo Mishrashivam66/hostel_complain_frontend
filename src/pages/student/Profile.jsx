@@ -68,7 +68,7 @@ const Profile = () => {
           const res =
             await axios.get(
 
-              `${process.env.BASE_URL}api/auth/me`,
+              `${import.meta.env.VITE_API_URL}api/auth/me`,
 
               {
 

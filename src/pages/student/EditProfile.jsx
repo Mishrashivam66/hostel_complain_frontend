@@ -71,7 +71,7 @@ const EditProfile = () => {
           await axios.put(
             
             
-            `${process.env.BASE_URL}api/auth/update-profile`,
+            `${import.meta.env.VITE_API_URL}api/auth/update-profile`,
 
             formData,
 
