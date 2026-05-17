@@ -68,7 +68,8 @@ const Profile = () => {
           const res =
             await axios.get(
 
-              "http://localhost:5000/api/auth/me",
+              `${process.env.BASE_URL}api/auth/me`,
+               {}
 
               {
 

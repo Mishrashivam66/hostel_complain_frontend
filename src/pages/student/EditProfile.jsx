@@ -69,8 +69,9 @@ const EditProfile = () => {
 
         const res =
           await axios.put(
-
-            "http://localhost:5000/api/auth/update-profile",
+            
+            
+            `${process.env.BASE_URL}api/auth/update-profile`,
 
             formData,
 

@@ -4,7 +4,8 @@ const API =
 axios.create({
 
   baseURL:
-    "http://localhost:5000/api",
+    // "http://localhost:5000/api",
+    `${process.env.BASE_URL}api`,
 
 });
 
