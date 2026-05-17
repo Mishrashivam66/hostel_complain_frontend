@@ -211,6 +211,8 @@
 
 .input-box {
 
+  position: relative;
+
   display: flex;
 
   align-items: center;
@@ -245,11 +247,45 @@
 
   font-size: 15px;
 
+  padding-right: 45px;
+
 }
 
 .input-box input::placeholder {
 
   color: #94a3b8;
+
+}
+
+/* ===================================== */
+/* PASSWORD TOGGLE */
+/* ===================================== */
+
+.toggle-password {
+
+  position: absolute;
+
+  right: 16px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
 
 }
 

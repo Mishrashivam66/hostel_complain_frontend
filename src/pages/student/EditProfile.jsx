@@ -100,6 +100,7 @@ const EditProfile = () => {
           )
 
         );
+        window.location.reload();
 
         alert(
 

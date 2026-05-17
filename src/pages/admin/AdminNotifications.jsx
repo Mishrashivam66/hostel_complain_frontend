@@ -1,12 +1,6 @@
-import {
-  Bell,
-  AlertTriangle,
-} from "lucide-react";
+import { Bell } from "lucide-react";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import AdminLayout from "../../layouts/AdminLayout";
 
@@ -15,192 +9,125 @@ import API from "../../services/api";
 import "./Admin.css";
 
 const AdminNotifications = () => {
-
   // ======================
   // STATES
   // ======================
 
-  const [
-    notifications,
-    setNotifications,
-  ] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   // ======================
-  // FETCH NOTIFICATIONS
+  // FETCH
   // ======================
 
-  const fetchNotifications =
-    async () => {
+  const fetchNotifications = async () => {
+    try {
+      const res = await API.get("/admin/notifications");
 
-      try {
+      setNotifications(res.data.notifications || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        const res =
-          await API.get(
-            "/admin/notifications"
-          );
+  // ======================
+  // MARK AS READ
+  // ======================
 
-        setNotifications(
-          res.data.notifications || []
-        );
+  const markAsRead = async (id) => {
+    try {
+      const res = await API.put(`/notifications/read/${id}`);
 
-      }
+      console.log(res.data);
 
-      catch (error) {
+      // UPDATE UI
 
-        console.log(error);
+      setNotifications(
+        notifications.map((item) =>
+          item._id === id
+            ? {
+                ...item,
 
-      }
+                isRead: true,
+              }
+            : item,
+        ),
+      );
 
-    };
+      // UPDATE BELL COUNT
+
+      setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // ======================
   // USE EFFECT
   // ======================
 
   useEffect(() => {
-
     fetchNotifications();
-
   }, []);
 
   return (
-
     <AdminLayout>
-
       <div className="admin-page">
-
         {/* ====================== */}
         {/* HEADER */}
         {/* ====================== */}
 
         <div className="admin-header">
+          <h1>Notifications</h1>
 
-          <h1>
-
-            Notifications
-
-          </h1>
-
-          <p>
-
-            Monitor overdue complaints
-            and escalation alerts
-
-          </p>
-
+          <p>Manage all admin notifications</p>
         </div>
 
         {/* ====================== */}
-        {/* NOTIFICATIONS */}
+        {/* LIST */}
         {/* ====================== */}
 
-        <div className="notification-list">
+        <div className="admin-section">
+          {notifications.length > 0 ? (
+            notifications.map((item, index) => (
+              <div
+                key={index}
+                className={`notification-card ${
+                  item.isRead ? "read-notification" : ""
+                }`}
+              >
+                {/* LEFT */}
 
-          {
-
-            notifications.length > 0
-
-            ?
-
-            notifications.map(
-
-              (
-                item,
-                index
-              ) => (
-
-                <div
-
-                  key={index}
-
-                  className={`notification-card ${
-
-                    item.isRead
-                    ? "read-card"
-                    : ""
-
-                  }`}
-
-                >
-
-                  {/* ICON */}
-
+                <div className="notification-left">
                   <div className="notification-icon">
-
-                    <AlertTriangle size={24} />
-
+                    <Bell size={20} />
                   </div>
 
-                  {/* CONTENT */}
+                  <div>
+                    <h3>{item.title}</h3>
 
-                  <div className="notification-content">
-
-                    <h3>
-
-                      {
-
-                        item.title
-
-                      }
-
-                    </h3>
-
-                    <p>
-
-                      {
-
-                        item.message
-
-                      }
-
-                    </p>
-
-                    <span className="notification-time">
-
-                      {
-
-                        new Date(
-
-                          item.createdAt
-
-                        ).toLocaleString()
-
-                      }
-
-                    </span>
-
+                    <p>{item.message}</p>
                   </div>
-
                 </div>
 
-              )
+                {/* RIGHT */}
 
-            )
-
-            :
-
-            <div className="empty-notification">
-
-              <Bell size={55} />
-
-              <h2>
-
-                No Notifications
-
-              </h2>
-
-            </div>
-
-          }
-
+                {!item.isRead && (
+                  <button
+                    className="mark-read-btn"
+                    onClick={() => markAsRead(item._id)}
+                  >
+                    Mark Read
+                  </button>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="empty-table">No notifications found</div>
+          )}
         </div>
-
       </div>
-
     </AdminLayout>
-
   );
-
 };
 
 export default AdminNotifications;

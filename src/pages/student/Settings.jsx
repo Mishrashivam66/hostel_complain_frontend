@@ -5,39 +5,26 @@ import StudentLayout from "../../layouts/StudentLayout";
 import "./Student.css";
 
 const Settings = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const user = JSON.parse(
+  const [formData, setFormData] = useState({
+    name: user?.name || "",
 
-    localStorage.getItem("user")
+    email: user?.email || "",
 
-  );
-
-  const [formData, setFormData] =
-    useState({
-
-      name: user?.name || "",
-
-      email: user?.email || "",
-
-      password: "",
-
-    });
+    password: "",
+  });
 
   // ======================
   // HANDLE CHANGE
   // ======================
 
   const handleChange = (e) => {
-
     setFormData({
-
       ...formData,
 
-      [e.target.name]:
-        e.target.value,
-
+      [e.target.name]: e.target.value,
     });
-
   };
 
   // ======================
@@ -45,93 +32,44 @@ const Settings = () => {
   // ======================
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
-    alert(
-      "Settings Updated"
-    );
-
+    alert("Settings Updated");
   };
 
   return (
-
     <StudentLayout>
-
       <div className="student-page">
-
         {/* HEADER */}
 
         <div className="student-header">
+          <h1>Settings</h1>
 
-          <h1>
-
-            Settings
-
-          </h1>
-
-          <p>
-
-            Manage your account
-            settings
-
-          </p>
-
+          <p>Manage your account settings</p>
         </div>
 
         {/* CARD */}
 
         <div className="settings-card">
-
           <form onSubmit={handleSubmit}>
-
             {/* NAME */}
 
             <div className="settings-group">
-
-              <label>
-
-                Full Name
-
-              </label>
-
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-
+              <label>Full Name</label>
+         <input type="email" value={user.name} disabled />
             </div>
 
             {/* EMAIL */}
 
             <div className="settings-group">
-
-              <label>
-
-                Email Address
-
-              </label>
-
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-
+              <label>Email Address</label>
+              <input type="email" value={user.email} disabled />
             </div>
 
             {/* PASSWORD */}
 
             <div className="settings-group">
-
-              <label>
-
-                New Password
-
-              </label>
+              <label>New Password</label>
 
               <input
                 type="password"
@@ -140,30 +78,18 @@ const Settings = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
-
             </div>
 
             {/* BUTTON */}
 
-            <button
-              type="submit"
-              className="submit-btn"
-            >
-
+            <button type="submit" className="submit-btn">
               Save Changes
-
             </button>
-
           </form>
-
         </div>
-
       </div>
-
     </StudentLayout>
-
   );
-
 };
 
 export default Settings;

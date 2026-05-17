@@ -343,3 +343,300 @@
   padding: 30px;
 
 }
+
+
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+
+@media screen and (max-width: 1024px) {
+
+  .admin-sidebar {
+
+    width: 220px;
+
+  }
+
+  .admin-main {
+
+    margin-left: 220px;
+
+  }
+
+}
+
+/* ====================== */
+/* TABLET */
+/* ====================== */
+
+@media screen and (max-width: 768px) {
+
+  .admin-layout {
+
+    flex-direction: column;
+
+  }
+
+  /* ====================== */
+  /* SIDEBAR */
+  /* ====================== */
+
+  .admin-sidebar {
+
+    width: 100%;
+
+    height: auto;
+
+    position: relative;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 15px 20px;
+
+  }
+
+  .admin-logo {
+
+    margin-bottom: 0;
+
+  }
+
+  .admin-logo h2 {
+
+    font-size: 20px;
+
+  }
+
+  /* ====================== */
+  /* MENU */
+  /* ====================== */
+
+  .admin-menu {
+
+    flex-direction: row;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+  }
+
+  .admin-menu-item {
+
+    padding: 10px 14px;
+
+    font-size: 14px;
+
+  }
+
+  /* ====================== */
+  /* MAIN */
+  /* ====================== */
+
+  .admin-main {
+
+    margin-left: 0;
+
+    width: 100%;
+
+  }
+
+  /* ====================== */
+  /* TOPBAR */
+  /* ====================== */
+
+  .admin-topbar {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding: 20px;
+
+  }
+
+  .admin-top-right {
+
+    width: 100%;
+
+    justify-content: space-between;
+
+  }
+
+  /* ====================== */
+  /* CONTENT */
+  /* ====================== */
+
+  .admin-content {
+
+    padding: 20px;
+
+  }
+
+}
+
+/* ====================== */
+/* MOBILE */
+/* ====================== */
+
+@media screen and (max-width: 480px) {
+
+  .admin-sidebar {
+
+    padding: 14px;
+
+  }
+
+  .admin-logo h2 {
+
+    font-size: 18px;
+
+  }
+
+  .admin-menu {
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+  }
+
+  .admin-menu-item {
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    font-size: 13px;
+
+    padding: 12px;
+
+  }
+
+  .admin-topbar h1 {
+
+    font-size: 22px;
+
+  }
+
+  .admin-topbar p {
+
+    font-size: 13px;
+
+  }
+
+  .admin-profile {
+
+    width: 42px;
+
+    height: 42px;
+
+    font-size: 16px;
+
+  }
+
+  .notification-box {
+
+    width: 42px;
+
+    height: 42px;
+
+  }
+
+  .admin-content {
+
+    padding: 15px;
+
+  }
+
+  /* ====================== */
+  /* TABLE */
+  /* ====================== */
+
+  .admin-table-wrapper {
+
+    overflow-x: auto;
+
+  }
+
+  .admin-table {
+
+    min-width: 900px;
+
+  }
+
+}
+
+
+/* ====================== */
+/* MENU TOGGLE */
+/* ====================== */
+
+.menu-toggle {
+
+  display: none;
+
+  border: none;
+
+  background: transparent;
+
+  color: white;
+
+  cursor: pointer;
+
+  margin: 15px;
+
+}
+
+/* ====================== */
+/* MOBILE */
+/* ====================== */
+
+@media screen and (max-width: 768px) {
+
+  .menu-toggle {
+
+    display: block;
+
+  }
+
+  .admin-sidebar {
+
+    position: fixed;
+
+    top: 0;
+
+    left: -100%;
+
+    width: 260px;
+
+    height: 100vh;
+
+    z-index: 999;
+
+    transition: 0.3s ease;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+
+  }
+
+  .show-sidebar {
+
+    left: 0;
+
+  }
+
+}

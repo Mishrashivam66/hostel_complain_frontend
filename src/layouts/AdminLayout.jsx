@@ -5,306 +5,237 @@ import {
   ClipboardList,
   Bell,
   LogOut,
+  Menu,
+  X,
 } from "lucide-react";
 
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import API from "../services/api";
 
 import "./AdminLayout.css";
 
-const AdminLayout = ({
-
-  children,
-
-}) => {
-
+const AdminLayout = ({ children }) => {
   // ======================
   // LOCATION
   // ======================
 
-  const location =
-    useLocation();
+  const location = useLocation();
 
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
   // ======================
   // USER
   // ======================
 
-  const user =
-    JSON.parse(
-
-      localStorage.getItem(
-        "user"
-      )
-
-    );
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // ======================
   // STATES
   // ======================
 
-  const [
+  const [unreadCount, setUnreadCount] = useState(0);
 
-    unreadCount,
-
-    setUnreadCount,
-
-  ] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // ======================
   // FETCH NOTIFICATIONS
   // ======================
 
-  const fetchNotifications =
-    async () => {
+ const fetchNotifications =
+async () => {
 
-      try {
+  try {
 
-        const res =
-          await API.get(
+    const res =
+      await API.get(
 
-            "/admin/notifications"
+        "/admin/notifications"
 
-          );
+      );
 
-        const unread =
+    const notifications =
 
-          res.data.notifications
-          .filter(
+      res.data.notifications || [];
 
-            (item) =>
+    // ======================
+    // UNREAD COUNT
+    // ======================
 
-              !item.isRead
+    const unread =
 
-          ).length;
+      notifications.filter(
 
-        setUnreadCount(
-          unread
-        );
+        (item) =>
 
-      }
+          !item.isRead
 
-      catch (error) {
+      ).length;
 
-        console.log(error);
+    setUnreadCount(
+      unread
+    );
 
-      }
+  }
 
-    };
+  catch (error) {
+
+    console.log(error);
+
+  }
+
+};
 
   // ======================
   // USE EFFECT
   // ======================
 
-  useEffect(() => {
+useEffect(() => {
 
-    fetchNotifications();
+  fetchNotifications();
 
-  }, []);
+  // ======================
+  // AUTO REFRESH
+  // ======================
 
+  const interval =
+
+    setInterval(() => {
+
+      fetchNotifications();
+
+    }, 5000);
+
+  // ======================
+  // CUSTOM EVENT
+  // ======================
+
+  window.addEventListener(
+
+    "notificationUpdated",
+
+    fetchNotifications
+
+  );
+
+  return () => {
+
+    clearInterval(interval);
+
+    window.removeEventListener(
+
+      "notificationUpdated",
+
+      fetchNotifications
+
+    );
+
+  };
+
+}, []);
   // ======================
   // LOGOUT
   // ======================
 
-  const handleLogout =
-    () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
 
-      localStorage.removeItem(
-        "token"
-      );
+    localStorage.removeItem("user");
 
-      localStorage.removeItem(
-        "user"
-      );
-
-      navigate("/login");
-
-    };
+    navigate("/login");
+  };
 
   // ======================
   // MENU ITEMS
   // ======================
 
   const menuItems = [
-
     {
+      name: "Dashboard",
 
-      name:
-        "Dashboard",
+      icon: <LayoutDashboard size={20} />,
 
-      icon:
-        <LayoutDashboard size={20} />,
-
-      path:
-        "/admin/dashboard",
-
+      path: "/admin/dashboard",
     },
 
     {
+      name: "Approvals",
 
-      name:
-        "Approvals",
+      icon: <Users size={20} />,
 
-      icon:
-        <Users size={20} />,
-
-      path:
-        "/admin/approvals",
-
+      path: "/admin/approvals",
     },
 
     {
+      name: "Students",
 
-      name:
-        "Students",
+      icon: <Users size={20} />,
 
-      icon:
-        <Users size={20} />,
-
-      path:
-        "/admin/students",
-
+      path: "/admin/students",
     },
 
     {
+      name: "Workers",
 
-      name:
-        "Workers",
+      icon: <UserCog size={20} />,
 
-      icon:
-        <UserCog size={20} />,
-
-      path:
-        "/admin/workers",
-
+      path: "/admin/workers",
     },
 
     {
+      name: "Complaints",
 
-      name:
-        "Complaints",
+      icon: <ClipboardList size={20} />,
 
-      icon:
-        <ClipboardList size={20} />,
-
-      path:
-        "/admin/complaints",
-
+      path: "/admin/complaints",
     },
 
     {
+      name: "Notifications",
 
-      name:
-        "Notifications",
+      icon: <Bell size={20} />,
 
-      icon:
-        <Bell size={20} />,
-
-      path:
-        "/admin/notifications",
-
+      path: "/admin/notifications",
     },
-
   ];
 
   return (
-
     <div className="admin-layout">
-
       {/* ====================== */}
       {/* SIDEBAR */}
       {/* ====================== */}
 
-      <div className="admin-sidebar">
-
+      <div className={`admin-sidebar ${sidebarOpen ? "show-sidebar" : ""}`}>
         <div className="admin-logo">
-
-          <h2>
-
-            Hostel Admin
-
-          </h2>
-
+          <h2>Hostel Admin</h2>
         </div>
 
         {/* MENU */}
 
         <div className="admin-menu">
+          {menuItems.map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              className={`admin-menu-item ${
+                location.pathname === item.path ? "active-admin" : ""
+              }`}
+            >
+              {item.icon}
 
-          {
-
-            menuItems.map(
-
-              (
-                item,
-                index
-              ) => (
-
-                <Link
-
-                  key={index}
-
-                  to={item.path}
-
-                  className={`admin-menu-item ${
-
-                    location.pathname ===
-                    item.path
-
-                    ? "active-admin"
-
-                    : ""
-
-                  }`}
-
-                >
-
-                  {item.icon}
-
-                  <span>
-
-                    {item.name}
-
-                  </span>
-
-                </Link>
-
-              )
-
-            )
-
-          }
-
+              <span>{item.name}</span>
+            </Link>
+          ))}
         </div>
 
         {/* LOGOUT */}
 
-        <button
-
-          className="logout-btn"
-
-          onClick={handleLogout}
-
-        >
-
+        <button className="logout-btn" onClick={handleLogout}>
           <LogOut size={18} />
-
           Logout
-
         </button>
-
       </div>
 
       {/* ====================== */}
@@ -312,105 +243,51 @@ const AdminLayout = ({
       {/* ====================== */}
 
       <div className="admin-main">
-
         {/* TOPBAR */}
+        <button
+          className="menu-toggle"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
         <div className="admin-topbar">
-
           {/* LEFT */}
 
           <div>
-
-            <h1>
-
-              Admin Dashboard
-
-            </h1>
+            <h1>Admin Dashboard</h1>
 
             <p>
-
               Welcome back,
-              {
-
-                user?.name
-
-              }
-
+              {user?.name}
             </p>
-
           </div>
 
           {/* RIGHT */}
 
           <div className="admin-top-right">
-
             {/* NOTIFICATION */}
 
-            <Link
-
-              to="/admin/notifications"
-
-              className="notification-box"
-
-            >
-
+            <Link to="/admin/notifications" className="notification-box">
               <Bell size={22} />
 
-              {
-
-                unreadCount > 0 && (
-
-                  <span className="notification-count">
-
-                    {
-
-                      unreadCount
-
-                    }
-
-                  </span>
-
-                )
-
-              }
-
+              {unreadCount > 0 && (
+                <span className="notification-count">{unreadCount}</span>
+              )}
             </Link>
 
             {/* PROFILE */}
 
-            <div className="admin-profile">
-
-              {
-
-                user?.name
-                ?.charAt(0)
-
-              }
-
-            </div>
-
+            <div className="admin-profile">{user?.name?.charAt(0)}</div>
           </div>
-
         </div>
 
         {/* CONTENT */}
 
-        <div className="admin-content">
-
-          {
-
-            children
-
-          }
-
-        </div>
-
+        <div className="admin-content">{children}</div>
       </div>
-
     </div>
-
   );
-
 };
 
 export default AdminLayout;

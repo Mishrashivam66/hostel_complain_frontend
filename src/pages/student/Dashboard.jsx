@@ -7,51 +7,82 @@ import {
   Activity,
 } from "lucide-react";
 
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import StudentLayout from "../../layouts/StudentLayout";
 
 import StatCard from "../../components/cards/StatCard";
+
+import API from "../../services/api";
 
 import "./Student.css";
 
 const Dashboard = () => {
 
   // ======================
-  // RECENT ACTIVITY
+  // STATES
   // ======================
 
-  const activities = [
+  const [
+    complaints,
+    setComplaints,
+  ] = useState([]);
 
-    {
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
 
-      title:
-        "Electrical Complaint Submitted",
+  // ======================
+  // FETCH COMPLAINTS
+  // ======================
 
-      time:
-        "2 Hours Ago",
+  const fetchComplaints =
+    async () => {
 
-    },
+      try {
 
-    {
+        const res =
+          await API.get(
 
-      title:
-        "Worker Assigned",
+            "/complaints/my"
 
-      time:
-        "5 Hours Ago",
+          );
 
-    },
+        setComplaints(
 
-    {
+          res.data.complaints || []
 
-      title:
-        "Complaint Resolved",
+        );
 
-      time:
-        "Yesterday",
+      }
 
-    },
+      catch (error) {
 
-  ];
+        console.log(error);
+
+      }
+
+      finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+  // ======================
+  // USE EFFECT
+  // ======================
+
+  useEffect(() => {
+
+    fetchComplaints();
+
+  }, []);
 
   return (
 
@@ -59,7 +90,9 @@ const Dashboard = () => {
 
       <div className="student-page">
 
+        {/* ====================== */}
         {/* HEADER */}
+        {/* ====================== */}
 
         <div className="student-header">
 
@@ -71,67 +104,136 @@ const Dashboard = () => {
 
           <p>
 
-            Monitor complaints,
-            activities and hostel
-            updates
+            Monitor complaints, workers and hostel updates
 
           </p>
 
         </div>
 
+        {/* ====================== */}
         {/* STATS */}
+        {/* ====================== */}
 
         <div className="stats-grid">
 
-          <StatCard
-            title="Total Complaints"
-            value="15"
-            color="#3b82f6"
-            icon={
-              <ClipboardList
-                size={22}
-              />
-            }
-          />
+          {/* PENDING */}
 
           <StatCard
+
             title="Pending"
-            value="4"
+
+            value={
+
+              complaints.filter(
+
+                (item) =>
+
+                  item.status ===
+                  "Pending"
+
+              ).length
+
+            }
+
             color="#f59e0b"
+
             icon={
               <Clock3 size={22} />
             }
+
           />
 
+          {/* IN PROGRESS */}
+
           <StatCard
+
+            title="In Progress"
+
+            value={
+
+              complaints.filter(
+
+                (item) =>
+
+                  item.status ===
+                  "In Progress"
+
+              ).length
+
+            }
+
+            color="#3b82f6"
+
+            icon={
+              <ClipboardList size={22} />
+            }
+
+          />
+
+          {/* COMPLETED */}
+
+          <StatCard
+
             title="Completed"
-            value="9"
-            color="#10b981"
-            icon={
-              <CheckCircle2
-                size={22}
-              />
+
+            value={
+
+              complaints.filter(
+
+                (item) =>
+
+                  item.status ===
+                  "Completed"
+
+              ).length
+
             }
+
+            color="#10b981"
+
+            icon={
+              <CheckCircle2 size={22} />
+            }
+
           />
 
+          {/* ESCALATED */}
+
           <StatCard
+
             title="Escalated"
-            value="2"
-            color="#ef4444"
-            icon={
-              <AlertTriangle
-                size={22}
-              />
+
+            value={
+
+              complaints.filter(
+
+                (item) =>
+
+                  item.isEscalated
+
+              ).length
+
             }
+
+            color="#ef4444"
+
+            icon={
+              <AlertTriangle size={22} />
+            }
+
           />
 
         </div>
 
+        {/* ====================== */}
         {/* DASHBOARD GRID */}
+        {/* ====================== */}
 
         <div className="dashboard-grid">
 
+          {/* ====================== */}
           {/* RECENT COMPLAINTS */}
+          {/* ====================== */}
 
           <div className="dashboard-card">
 
@@ -147,93 +249,189 @@ const Dashboard = () => {
 
             </div>
 
-            {/* ITEM */}
+            {
 
-            <div className="recent-item">
+              loading
 
-              <div>
+              ?
 
-                <h4>
+              <div className="empty-dashboard">
 
-                  Electrical Issue
+                <h3>
 
-                </h4>
+                  Loading complaints...
+
+                </h3>
+
+              </div>
+
+              :
+
+              complaints.length > 0
+
+              ?
+
+              complaints
+
+                .slice(0, 5)
+
+                .map((item, index) => (
+
+                  <div
+
+                    className="recent-item"
+
+                    key={index}
+
+                  >
+
+                    <div>
+
+                      {/* CATEGORY */}
+
+                      <h4>
+
+                        {
+
+                          item.category
+
+                        }
+
+                      </h4>
+
+                      {/* ROOM */}
+
+                      <p>
+
+                        Room:
+                        {
+
+                          item.room
+
+                        }
+
+                      </p>
+
+                      {/* WORKER */}
+
+                      <p>
+
+                        Worker:
+                        {
+
+                          item.assignedWorker
+
+                          ||
+
+                          "Not Assigned"
+
+                        }
+
+                      </p>
+
+                      {/* DEADLINE */}
+
+                      <p>
+
+                        Deadline:
+
+                        {
+
+                          item.completionDeadline
+
+                          ?
+
+                          new Date(
+
+                            item.completionDeadline
+
+                          ).toLocaleString()
+
+                          :
+
+                          "-"
+
+                        }
+
+                      </p>
+
+                    </div>
+
+                    {/* STATUS */}
+
+                    <span
+
+                      className={
+
+                        item.status ===
+                        "Completed"
+
+                        ?
+
+                        "completed"
+
+                        :
+
+                        item.status ===
+                        "In Progress"
+
+                        ?
+
+                        "assigned"
+
+                        :
+
+                        item.isEscalated
+
+                        ?
+
+                        "escalated"
+
+                        :
+
+                        "pending"
+
+                      }
+
+                    >
+
+                      {
+
+                        item.status
+
+                      }
+
+                    </span>
+
+                  </div>
+
+                ))
+
+              :
+
+              <div className="empty-dashboard">
+
+                <h3>
+
+                  No complaints yet 🚀
+
+                </h3>
 
                 <p>
 
-                  Room G1A
+                  Create your first hostel complaint
 
                 </p>
 
               </div>
 
-              <span className="pending">
-
-                Pending
-
-              </span>
-
-            </div>
-
-            {/* ITEM */}
-
-            <div className="recent-item">
-
-              <div>
-
-                <h4>
-
-                  Plumbing Issue
-
-                </h4>
-
-                <p>
-
-                  Room 2B
-
-                </p>
-
-              </div>
-
-              <span className="completed">
-
-                Completed
-
-              </span>
-
-            </div>
-
-            {/* ITEM */}
-
-            <div className="recent-item">
-
-              <div>
-
-                <h4>
-
-                  WiFi Complaint
-
-                </h4>
-
-                <p>
-
-                  Room 3C
-
-                </p>
-
-              </div>
-
-              <span className="escalated">
-
-                Escalated
-
-              </span>
-
-            </div>
+            }
 
           </div>
 
-          {/* ACTIVITY */}
+          {/* ====================== */}
+          {/* RECENT ACTIVITY */}
+          {/* ====================== */}
 
           <div className="dashboard-card">
 
@@ -249,38 +447,94 @@ const Dashboard = () => {
 
             </div>
 
-            {activities.map(
+            {
 
-              (item, index) => (
+              loading
 
-                <div
-                  key={index}
-                  className="activity-item"
-                >
+              ?
 
-                  <div className="activity-dot"></div>
+              <div className="empty-dashboard">
 
-                  <div>
+                <h3>
 
-                    <h4>
+                  Loading activity...
 
-                      {item.title}
+                </h3>
 
-                    </h4>
+              </div>
 
-                    <p>
+              :
 
-                      {item.time}
+              complaints.length > 0
 
-                    </p>
+              ?
+
+              complaints
+
+                .slice(0, 5)
+
+                .map((item, index) => (
+
+                  <div
+
+                    key={index}
+
+                    className="activity-item"
+
+                  >
+
+                    <div className="activity-dot">
+
+                    </div>
+
+                    <div>
+
+                      <h4>
+
+                        {
+
+                          item.category
+
+                        }
+
+                        {" "}
+                        Complaint
+
+                      </h4>
+
+                      <p>
+
+                        {
+
+                          new Date(
+
+                            item.createdAt
+
+                          ).toLocaleString()
+
+                        }
+
+                      </p>
+
+                    </div>
 
                   </div>
 
-                </div>
+                ))
 
-              )
+              :
 
-            )}
+              <div className="empty-dashboard">
+
+                <h3>
+
+                  No activity yet
+
+                </h3>
+
+              </div>
+
+            }
 
           </div>
 

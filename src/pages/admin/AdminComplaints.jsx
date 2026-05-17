@@ -1,6 +1,15 @@
-import { Search, Filter, ClipboardList } from "lucide-react";
+import { CSVLink } from "react-csv";
 
-import { useEffect, useState } from "react";
+import {
+  Search,
+  Filter,
+  ClipboardList,
+} from "lucide-react";
+
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import AdminLayout from "../../layouts/AdminLayout";
 
@@ -9,118 +18,304 @@ import API from "../../services/api";
 import "./Admin.css";
 
 const AdminComplaints = () => {
+
   // ======================
   // STATES
   // ======================
 
-  const [complaints, setComplaints] = useState([]);
+  const [
+    complaints,
+    setComplaints,
+  ] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
 
-  const [search, setSearch] = useState("");
+  const [
+    search,
+    setSearch,
+  ] = useState("");
 
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [
+    statusFilter,
+    setStatusFilter,
+  ] = useState("All");
+
+  const [
+    selectedDescription,
+    setSelectedDescription,
+  ] = useState("");
 
   // ======================
   // FETCH COMPLAINTS
   // ======================
 
-  const fetchComplaints = async () => {
-    try {
-      const res = await API.get("/admin/complaints");
+  const fetchComplaints =
+    async () => {
 
-      setComplaints(res.data.complaints || []);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+
+        const res =
+          await API.get(
+
+            "/admin/complaints"
+
+          );
+
+        setComplaints(
+
+          res.data.complaints || []
+
+        );
+
+      }
+
+      catch (error) {
+
+        console.log(error);
+
+      }
+
+      finally {
+
+        setLoading(false);
+
+      }
+
+    };
 
   // ======================
   // USE EFFECT
   // ======================
 
   useEffect(() => {
+
     fetchComplaints();
+
   }, []);
 
   // ======================
   // FILTER
   // ======================
 
-  const filteredComplaints = complaints.filter((item) => {
-    const searchText = search.toLowerCase();
+  const filteredComplaints =
 
-    const studentName = item.studentName?.toLowerCase() || "";
+    complaints.filter((item) => {
 
-    const category = item.category?.toLowerCase() || "";
+      const searchText =
+        search.toLowerCase();
 
-    const complaintId = item.complaintId?.toLowerCase() || "";
+      const studentName =
 
-    const worker = item.assignedWorker?.toLowerCase() || "";
+        item.studentName
+        ?.toLowerCase()
 
-    const matchesSearch =
-      studentName.includes(searchText) ||
-      category.includes(searchText) ||
-      complaintId.includes(searchText) ||
-      worker.includes(searchText);
+        ||
 
-    const matchesStatus =
-      statusFilter === "All" || item.status === statusFilter;
+        "";
 
-    return matchesSearch && matchesStatus;
-  });
+      const category =
+
+        item.category
+        ?.toLowerCase()
+
+        ||
+
+        "";
+
+      const complaintId =
+
+        item.complaintId
+        ?.toLowerCase()
+
+        ||
+
+        "";
+
+      const worker =
+
+        item.assignedWorker
+        ?.toLowerCase()
+
+        ||
+
+        "";
+
+      const matchesSearch =
+
+        studentName.includes(
+          searchText
+        )
+
+        ||
+
+        category.includes(
+          searchText
+        )
+
+        ||
+
+        complaintId.includes(
+          searchText
+        )
+
+        ||
+
+        worker.includes(
+          searchText
+        );
+
+      const matchesStatus =
+
+        statusFilter === "All"
+
+        ||
+
+        item.status ===
+        statusFilter;
+
+      return (
+
+        matchesSearch
+
+        &&
+
+        matchesStatus
+
+      );
+
+    });
 
   return (
+
     <AdminLayout>
+
       <div className="admin-page">
+
         {/* ====================== */}
         {/* HEADER */}
         {/* ====================== */}
 
         <div className="admin-header">
-          <h1>Complaints List</h1>
 
-          <p>Monitor all hostel complaints</p>
+          <h1>
+
+            Complaints List
+
+          </h1>
+
+          <p>
+
+            Monitor all hostel complaints
+
+          </p>
+
         </div>
 
         {/* ====================== */}
-        {/* FILTER ROW */}
+        {/* FILTER */}
         {/* ====================== */}
 
         <div className="admin-filter-row">
+
           {/* SEARCH */}
 
           <div className="admin-search">
+
             <Search size={18} />
 
             <input
+
               type="text"
+
               placeholder="Search complaints..."
+
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+
+              onChange={(e) =>
+
+                setSearch(
+                  e.target.value
+                )
+
+              }
+
             />
+
           </div>
 
           {/* FILTER */}
 
           <div className="admin-filter">
+
             <Filter size={18} />
 
             <select
+
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+
+              onChange={(e) =>
+
+                setStatusFilter(
+                  e.target.value
+                )
+
+              }
+
             >
-              <option value="All">All Status</option>
 
-              <option value="Pending">Pending</option>
+              <option value="All">
 
-              <option value="In Progress">In Progress</option>
+                All Status
 
-              <option value="Completed">Completed</option>
+              </option>
+
+              <option value="Pending">
+
+                Pending
+
+              </option>
+
+              <option value="In Progress">
+
+                In Progress
+
+              </option>
+
+              <option value="Completed">
+
+                Completed
+
+              </option>
+
             </select>
+
           </div>
+
+        </div>
+
+        {/* ====================== */}
+        {/* EXPORT */}
+        {/* ====================== */}
+
+        <div className="export-buttons">
+
+          <CSVLink
+
+            data={filteredComplaints}
+
+            filename="complaints-report.csv"
+
+            className="export-btn"
+
+          >
+
+            Download CSV
+
+          </CSVLink>
+
         </div>
 
         {/* ====================== */}
@@ -128,136 +323,482 @@ const AdminComplaints = () => {
         {/* ====================== */}
 
         <div className="admin-section">
+
           <div className="admin-section-header">
+
             <div>
-              <h2>Complaints Table</h2>
+
+              <h2>
+
+                Complaints Table
+
+              </h2>
 
               <p>
+
                 Total Complaints:
-                {filteredComplaints.length}
+                {
+
+                  filteredComplaints.length
+
+                }
+
               </p>
+
             </div>
+
           </div>
 
           {/* ====================== */}
-          {/* TABLE */}
+          {/* TABLE WRAPPER */}
           {/* ====================== */}
 
           <div className="admin-table-wrapper">
+
             <table className="admin-table">
+
               <thead>
+
                 <tr>
-                  <th>Complaint ID</th>
 
-                  <th>Student</th>
+                  <th>
 
-                  <th>Hostel</th>
+                    Complaint ID
 
-                  <th>Room</th>
+                  </th>
 
-                  <th>Category</th>
+                  <th>
 
-                  <th>Phone</th>
+                    Student
 
-                  <th>Status</th>
+                  </th>
 
-                  <th>Worker</th>
+                  <th>
 
-                  <th>Escalated</th>
+                    Hostel
+
+                  </th>
+
+                  <th>
+
+                    Room
+
+                  </th>
+
+                  <th>
+
+                    Category
+
+                  </th>
+
+                  <th>
+
+                    Description
+
+                  </th>
+
+                  <th>
+
+                    Phone
+
+                  </th>
+
+                  <th>
+
+                    Status
+
+                  </th>
+
+                  <th>
+
+                    Worker
+
+                  </th>
+
+                  <th>
+
+                    Escalated
+
+                  </th>
+
                 </tr>
+
               </thead>
 
               <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan="9" className="empty-table">
-                      Loading complaints...
-                    </td>
-                  </tr>
-                ) : filteredComplaints.length > 0 ? (
-                  filteredComplaints.map((item, index) => (
-                    <tr key={index}>
-                      {/* ID */}
 
-                      <td>
-                        <div className="user-box">
-                          <div className="user-avatar">
-                            <ClipboardList size={16} />
+                {
+
+                  loading
+
+                  ?
+
+                  <tr>
+
+                    <td
+
+                      colSpan="10"
+
+                      className="empty-table"
+
+                    >
+
+                      Loading complaints...
+
+                    </td>
+
+                  </tr>
+
+                  :
+
+                  filteredComplaints.length > 0
+
+                  ?
+
+                  filteredComplaints.map(
+
+                    (
+                      item,
+                      index
+                    ) => (
+
+                      <tr
+
+                        key={index}
+
+                        className={
+
+                          item.status !==
+                          "Completed"
+
+                          &&
+
+                          item.completionDeadline
+
+                          &&
+
+                          new Date(
+                            item.completionDeadline
+                          ) < new Date()
+
+                          ?
+
+                          "overdue-row"
+
+                          :
+
+                          ""
+
+                        }
+
+                      >
+
+                        {/* ID */}
+
+                        <td>
+
+                          <div className="user-box">
+
+                            <div className="user-avatar">
+
+                              <ClipboardList size={16} />
+
+                            </div>
+
+                            {
+
+                              item.complaintId
+
+                            }
+
                           </div>
 
-                          {item.complaintId}
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* STUDENT */}
+                        {/* STUDENT */}
 
-                      <td>{item.studentName || "Unknown"}</td>
+                        <td>
 
-                      {/* HOSTEL */}
+                          {
 
-                      <td>{item.hostel}</td>
+                            item.studentName
 
-                      {/* ROOM */}
+                            ||
 
-                      <td>{item.room}</td>
+                            "Unknown"
 
-                      {/* CATEGORY */}
+                          }
 
-                      <td>{item.category}</td>
+                        </td>
 
-                      {/* PHONE */}
+                        {/* HOSTEL */}
 
-                      <td>{item.phoneNumber}</td>
+                        <td>
 
-                      {/* STATUS */}
+                          {
 
-                      <td>
-                        <span
-                          className={`status-badge ${
-                            item.status === "Completed"
-                              ? "status-completed"
-                              : item.status === "In Progress"
-                                ? "status-assigned"
-                                : "status-pending"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </td>
+                            item.hostel
 
-                      {/* WORKER */}
+                          }
 
-                      <td>{item.assignedWorker || "-"}</td>
+                        </td>
 
-                      {/* ESCALATED */}
+                        {/* ROOM */}
 
-                      <td>
-                        {item.isEscalated ? (
-                          <span className="status-badge status-pending">
-                            Yes
+                        <td>
+
+                          {
+
+                            item.room
+
+                          }
+
+                        </td>
+
+                        {/* CATEGORY */}
+
+                        <td>
+
+                          {
+
+                            item.category
+
+                          }
+
+                        </td>
+
+                        {/* DESCRIPTION */}
+
+                        <td>
+
+                          <button
+
+                            className="view-desc-btn"
+
+                            onClick={() =>
+
+                              setSelectedDescription(
+
+                                item.description
+
+                              )
+
+                            }
+
+                          >
+
+                            View
+
+                          </button>
+
+                        </td>
+
+                        {/* PHONE */}
+
+                        <td>
+
+                          {
+
+                            item.phoneNumber
+
+                          }
+
+                        </td>
+
+                        {/* STATUS */}
+
+                        <td>
+
+                          <span
+
+                            className={`status-badge ${
+
+                              item.status ===
+                              "Completed"
+
+                              ?
+
+                              "status-completed"
+
+                              :
+
+                              item.status ===
+                              "In Progress"
+
+                              ?
+
+                              "status-assigned"
+
+                              :
+
+                              "status-pending"
+
+                            }`}
+
+                          >
+
+                            {
+
+                              item.status
+
+                            }
+
                           </span>
-                        ) : (
-                          <span className="status-badge status-completed">
-                            No
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
+
+                        </td>
+
+                        {/* WORKER */}
+
+                        <td>
+
+                          {
+
+                            item.assignedWorker
+
+                            ||
+
+                            "-"
+
+                          }
+
+                        </td>
+
+                        {/* ESCALATED */}
+
+                        <td>
+
+                          {
+
+                            item.isEscalated
+
+                            ?
+
+                            <span className="status-badge status-pending">
+
+                              Yes
+
+                            </span>
+
+                            :
+
+                            <span className="status-badge status-completed">
+
+                              No
+
+                            </span>
+
+                          }
+
+                        </td>
+
+                      </tr>
+
+                    )
+
+                  )
+
+                  :
+
                   <tr>
-                    <td colSpan="9" className="empty-table">
+
+                    <td
+
+                      colSpan="10"
+
+                      className="empty-table"
+
+                    >
+
                       No complaints found
+
                     </td>
+
                   </tr>
-                )}
+
+                }
+
               </tbody>
+
             </table>
+
           </div>
+
         </div>
+
       </div>
+
+      {/* ====================== */}
+      {/* DESCRIPTION MODAL */}
+      {/* ====================== */}
+
+      {
+
+        selectedDescription && (
+
+          <div
+
+            className="desc-modal-overlay"
+
+            onClick={() =>
+
+              setSelectedDescription("")
+
+            }
+
+          >
+
+            <div
+
+              className="desc-modal"
+
+              onClick={(e) =>
+
+                e.stopPropagation()
+
+              }
+
+            >
+
+              <h2>
+
+                Complaint Description
+
+              </h2>
+
+              <p>
+
+                {selectedDescription}
+
+              </p>
+
+              <button
+
+                className="close-modal-btn"
+
+                onClick={() =>
+
+                  setSelectedDescription("")
+
+                }
+
+              >
+
+                Close
+
+              </button>
+
+            </div>
+
+          </div>
+
+        )
+
+      }
+
     </AdminLayout>
+
   );
+
 };
 
 export default AdminComplaints;

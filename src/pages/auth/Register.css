@@ -350,3 +350,44 @@
   }
 
 }
+
+
+/* ===================================== */
+/* PASSWORD TOGGLE */
+/* ===================================== */
+
+.password-box {
+
+  position: relative;
+
+  width: 100%;
+
+}
+
+.password-box input {
+
+  width: 100%;
+
+  padding-right: 50px;
+
+}
+
+.toggle-password {
+
+  position: absolute;
+
+  top: 50%;
+
+  right: 14px;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+}

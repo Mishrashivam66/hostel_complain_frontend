@@ -1,173 +1,151 @@
+import { useEffect, useState } from "react";
+
 import StudentLayout from "../../layouts/StudentLayout";
+
+import API from "../../services/api";
 
 import "./Student.css";
 
 const Notifications = () => {
+  // =====================================
+  // STATE
+  // =====================================
 
-  // ======================
-  // DUMMY DATA
-  // ======================
+  const [notifications, setNotifications] = useState([]);
 
-  const notifications = [
+  const [loading, setLoading] = useState(true);
 
-    {
+  // =====================================
+  // FETCH NOTIFICATIONS
+  // =====================================
 
-      id: 1,
+  const fetchNotifications = async () => {
+    try {
+      const res = await API.get("/notifications");
 
-      type: "info",
+      console.log(res.data);
 
-      title:
-        "Complaint Assigned",
+      setNotifications(res.data.notifications || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      message:
-        "Electrician assigned for room 204 issue.",
+  // =====================================
+  // MARK READ
+  // =====================================
 
-      time:
-        "2 minutes ago",
+  const markAsRead = async (id) => {
+    try {
+      await API.put(`/notifications/read/${id}`);
 
-    },
+      setNotifications(
+        notifications.map((item) =>
+          item._id === id
+            ? {
+                ...item,
 
-    {
+                isRead: true,
+              }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      id: 2,
+  // =====================================
+  // USE EFFECT
+  // =====================================
 
-      type: "success",
-
-      title:
-        "Complaint Completed",
-
-      message:
-        "Plumbing complaint resolved successfully.",
-
-      time:
-        "1 hour ago",
-
-    },
-
-    {
-
-      id: 3,
-
-      type: "warning",
-
-      title:
-        "New Announcement",
-
-      message:
-        "Hostel maintenance scheduled this weekend.",
-
-      time:
-        "Today",
-
-    },
-
-  ];
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   return (
-
     <StudentLayout>
-
       <div className="student-page">
-
+        {/* ===================================== */}
         {/* HEADER */}
+        {/* ===================================== */}
 
         <div className="student-header">
+          <h1>Notifications</h1>
 
-          <h1>
-
-            Notifications
-
-          </h1>
-
-          <p>
-
-            Latest complaint updates
-            and announcements
-
-          </p>
-
+          <p>Complaint updates and alerts</p>
         </div>
 
+        {/* ===================================== */}
+        {/* LOADING */}
+        {/* ===================================== */}
+
+        {loading && <div className="empty-box">Loading notifications...</div>}
+
+        {/* ===================================== */}
+        {/* EMPTY */}
+        {/* ===================================== */}
+
+        {!loading && notifications.length === 0 && (
+          <div className="empty-box">No notifications found</div>
+        )}
+
+        {/* ===================================== */}
         {/* LIST */}
+        {/* ===================================== */}
 
-        <div className="notification-list">
-
-          {notifications.map(
-
-            (item) => (
-
+        {notifications.length > 0 && (
+          <div className="notification-list">
+            {notifications.map((item) => (
               <div
-
-                key={item.id}
-
+                key={item._id}
                 className={`notification-card ${
-
-                  item.type
-
+                  item.isRead ? "read" : "unread"
                 }`}
-
               >
-
                 {/* ICON */}
 
                 <div className="notification-icon">
-
-                  {
-
-                    item.type ===
-                    "success"
-
-                      ? "✅"
-
-                      : item.type ===
-                        "warning"
-
-                      ? "⚠️"
-
-                      : "🔔"
-
-                  }
-
+                  {item.type === "completed"
+                    ? "✅"
+                    : item.type === "accepted"
+                      ? "🛠️"
+                      : item.type === "escalated"
+                        ? "⚠️"
+                        : item.type === "progress"
+                          ? "🚧"
+                          : "🔔"}
                 </div>
 
                 {/* CONTENT */}
 
                 <div className="notification-content">
+                  <h3>{item.title}</h3>
 
-                  <h3>
+                  <p>{item.message}</p>
 
-                    {item.title}
-
-                  </h3>
-
-                  <p>
-
-                    {item.message}
-
-                  </p>
-
-                  <span>
-
-                    {item.time}
-
-                  </span>
-
+                  <span>{new Date(item.createdAt).toLocaleString()}</span>
                 </div>
 
+                {/* MARK READ */}
+
+                {!item.isRead && (
+                  <button
+                    className="mark-read-btn"
+                    onClick={() => markAsRead(item._id)}
+                  >
+                    Mark Read
+                  </button>
+                )}
               </div>
-
-            )
-
-          )}
-
-        </div>
-
+            ))}
+          </div>
+        )}
       </div>
-
     </StudentLayout>
-
   );
-
 };
 
 export default Notifications;

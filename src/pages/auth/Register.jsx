@@ -1,9 +1,7 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   User,
@@ -20,13 +18,12 @@ import API from "../../services/api";
 import "./Register.css";
 
 const Register = () => {
-
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-
     name: "",
 
     email: "",
@@ -34,7 +31,6 @@ const Register = () => {
     password: "",
 
     role: "student",
-
   });
 
   // ======================
@@ -42,28 +38,18 @@ const Register = () => {
   // ======================
 
   const handleChange = (e) => {
-
     setFormData({
-
       ...formData,
 
-      [e.target.name]:
-        e.target.value,
-
+      [e.target.name]: e.target.value,
     });
-
   };
 
   // ======================
   // HANDLE REGISTER
   // ======================
 
-  const handleRegister = async (
-
-    e
-
-  ) => {
-
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     // ======================
@@ -71,85 +57,46 @@ const Register = () => {
     // ======================
 
     const isAmityEmail =
-
-      formData.email
-        .toLowerCase()
-        .endsWith("@amity.edu")
-
-      ||
-
-      formData.email
-        .toLowerCase()
-        .endsWith("@s.amity.edu");
+      formData.email.toLowerCase().endsWith("@amity.edu") ||
+      formData.email.toLowerCase().endsWith("@s.amity.edu");
 
     if (!isAmityEmail) {
-
-      setMessage(
-
-        "Use your official Amity University email"
-
-      );
+      setMessage("Use your official Amity University email");
 
       return;
-
     }
 
     try {
-
       // ======================
       // REGISTER API
       // ======================
 
       await API.post(
-
         "/auth/register",
 
-        formData
-
+        formData,
       );
 
       // ======================
       // SUCCESS MESSAGE
       // ======================
 
-      setMessage(
-
-        "Registration Successful! Redirecting to login..."
-
-      );
+      setMessage("Registration Successful! Redirecting to login...");
 
       // ======================
       // REDIRECT
       // ======================
 
       setTimeout(() => {
-
         navigate("/");
-
       }, 1500);
-
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Registration Failed");
     }
-
-    catch (error) {
-
-      setMessage(
-
-        error.response?.data?.message
-
-        ||
-
-        "Registration Failed"
-
-      );
-
-    }
-
   };
 
   return (
-
     <div className="register-page">
-
       {/* OVERLAY */}
 
       <div className="register-overlay"></div>
@@ -157,143 +104,74 @@ const Register = () => {
       {/* LEFT SIDE */}
 
       <div className="register-left">
-
         {/* BRAND */}
 
         <div className="register-brand">
+          <h1>AMITY UNIVERSITY</h1>
 
-          <h1>
-
-            AMITY
-            UNIVERSITY
-
-          </h1>
-
-          <p>
-
-            A Reputation of Excellence
-
-          </p>
-
+          <p>A Reputation of Excellence</p>
         </div>
 
         {/* HERO */}
 
         <div className="register-hero">
-
-          <h2>
-
-            Create Account
-
-          </h2>
+          <h2>Create Account</h2>
 
           <p>
-
-            Register into the AI-powered
-            Hostel Complaint Management
-            ERP system for students and
-            workers.
-
+            Register into the AI-powered Hostel Complaint Management ERP system
+            for students and workers.
           </p>
-
         </div>
 
         {/* FEATURES */}
 
         <div className="register-features">
-
           <div className="register-feature">
-
             <ShieldCheck size={26} />
 
-            <span>
-
-              Secure
-
-            </span>
-
+            <span>Secure</span>
           </div>
 
           <div className="register-feature">
-
             <Zap size={26} />
 
-            <span>
-
-              Fast
-
-            </span>
-
+            <span>Fast</span>
           </div>
 
           <div className="register-feature">
-
             <Users size={26} />
 
-            <span>
-
-              User Friendly
-
-            </span>
-
+            <span>User Friendly</span>
           </div>
 
           <div className="register-feature">
-
             <BarChart3 size={26} />
 
-            <span>
-
-              Smart Analytics
-
-            </span>
-
+            <span>Smart Analytics</span>
           </div>
-
         </div>
-
       </div>
 
       {/* RIGHT SIDE */}
 
       <div className="register-right">
-
         <div className="register-card">
-
           {/* TITLE */}
 
-          <h1 className="register-title">
+          <h1 className="register-title">Register</h1>
 
-            Register
-
-          </h1>
-
-          <p className="register-subtitle">
-
-            Create your hostel account
-
-          </p>
+          <p className="register-subtitle">Create your hostel account</p>
 
           {/* MESSAGE */}
 
-          {message && (
-
-            <div className="register-message">
-
-              {message}
-
-            </div>
-
-          )}
+          {message && <div className="register-message">{message}</div>}
 
           {/* FORM */}
 
           <form onSubmit={handleRegister}>
-
             {/* NAME */}
 
             <div className="register-input-box">
-
               <User size={20} />
 
               <input
@@ -304,13 +182,11 @@ const Register = () => {
                 onChange={handleChange}
                 required
               />
-
             </div>
 
             {/* EMAIL */}
 
             <div className="register-input-box">
-
               <Mail size={20} />
 
               <input
@@ -321,17 +197,14 @@ const Register = () => {
                 onChange={handleChange}
                 required
               />
-
             </div>
-
             {/* PASSWORD */}
 
-            <div className="register-input-box">
-
+            <div className="register-input-box password-box">
               <Lock size={20} />
 
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
@@ -339,6 +212,13 @@ const Register = () => {
                 required
               />
 
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
 
             {/* ROLE */}
@@ -349,56 +229,27 @@ const Register = () => {
               onChange={handleChange}
               className="register-select"
             >
+              <option value="student">Student</option>
 
-              <option value="student">
-
-                Student
-
-              </option>
-
-              <option value="worker">
-
-                Worker
-
-              </option>
-
+              <option value="worker">Worker</option>
             </select>
 
             {/* BUTTON */}
 
-            <button
-              type="submit"
-              className="register-btn"
-            >
-
+            <button type="submit" className="register-btn">
               Register
-
             </button>
-
           </form>
 
           {/* FOOTER */}
 
           <div className="register-footer">
-
-            Already have an account?{" "}
-
-            <Link to="/">
-
-              Login
-
-            </Link>
-
+            Already have an account? <Link to="/">Login</Link>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   );
-
 };
 
 export default Register;

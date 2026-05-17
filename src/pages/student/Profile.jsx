@@ -88,6 +88,9 @@ const Profile = () => {
             res.data.user
 
           );
+          console.log(
+  res.data.user
+);
 
         } catch (error) {
 
@@ -158,22 +161,9 @@ const Profile = () => {
 
                 <h2>
 
-                  {
+  {user?.name}
 
-                    user?.firstName
-
-                  }
-
-                  {" "}
-
-                  {
-
-                    user?.lastName
-
-                  }
-
-                </h2>
-
+</h2>
                 <p>
 
                   Student Account
